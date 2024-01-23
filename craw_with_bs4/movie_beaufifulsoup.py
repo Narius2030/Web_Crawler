@@ -18,7 +18,9 @@ def crawl_data(str_link):
     for transcpt_link in transcpt_links:
         url = transcpt_link['href']
         f = requests.get(url, headers={})
-    
+    	soup = BeautifulSoup(f.content, "lxml")
+    	movies = soup.find_all("article", {'class': 'item movies'})
+
         for movie in movies:
             movie_item = {}
             #Get data of each Tag element
@@ -60,7 +62,7 @@ def create_table(conn, table_name, fields):
     cursor.execute(sqlStr)
     conn.commit()
 
-import cleaning_data as cd
+import craw_with_bs4.cleaning_data as cd
 
 def insert_data(conn, data_info, table_name, fields):
     """Insert data into to table on database
